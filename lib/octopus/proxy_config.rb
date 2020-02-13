@@ -47,7 +47,7 @@ module Octopus
           fail "Nonexistent Shard Name: #{shard_symbol}" if shards[shard_symbol].nil?
         end
 
-        if slave_group_symbol.present?git
+        if slave_group_symbol.present?
           if (shards_slave_groups.try(:[], shard_symbol).present? && shards_slave_groups[shard_symbol][slave_group_symbol].nil?) ||
               (shards_slave_groups.try(:[], shard_symbol).nil? && @slave_groups[slave_group_symbol].nil?)
             fail "Nonexistent Slave Group Name: #{slave_group_symbol} in shards config: #{shards_config.inspect}"
