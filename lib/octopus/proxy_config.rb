@@ -60,7 +60,7 @@ module Octopus
       end
 
       self.current_slave_group = nil if shard_symbol == :master
-      self.default_slave_group = nil if shard_symbol == :master
+      # self.default_slave_group = nil if shard_symbol == :master
       Thread.current[CURRENT_SHARD_KEY] = shard_symbol
     end
 
