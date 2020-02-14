@@ -10,7 +10,7 @@ module Octopus
 
     attr_accessor :config, :sharded, :shards, :shards_slave_groups, :slave_groups,
                   :adapters, :replicated, :slaves_load_balancer, :slaves_list, :shards_slave_groups,
-                  :slave_groups, :groups, :entire_sharded, :shards_config
+                  :slave_groups, :groups, :entire_sharded, :shards_config, :default_slave_group
 
     def initialize(config)
       initialize_shards(config)
@@ -59,6 +59,8 @@ module Octopus
         fail "Nonexistent Shard Name: #{shard_symbol}" if shards[shard_symbol].nil?
       end
 
+      self.current_slave_group = nil if shard_symbol == :master
+      self.default_slave_group = nil if shard_symbol == :master
       Thread.current[CURRENT_SHARD_KEY] = shard_symbol
     end
 
@@ -76,7 +78,7 @@ module Octopus
     end
 
     def current_slave_group
-      Thread.current[CURRENT_SLAVE_GROUP_KEY]
+      Thread.current[CURRENT_SLAVE_GROUP_KEY] || default_slave_group
     end
 
     def current_slave_group=(slave_group_symbol)
