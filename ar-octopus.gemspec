@@ -11,8 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Easy Database Sharding for ActiveRecord'
   s.description = 'This gem allows you to use sharded databases with ActiveRecord. This also provides a interface for replication and for running migrations with multiples shards.'
 
-  s.files         = `git ls-files`.split("\n")
-  s.files.reject! { |fn| fn.include? "sample_app" }
+  s.files         = Dir['lib/**/*.rb']
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ['lib']
