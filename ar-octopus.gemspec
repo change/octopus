@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = 'This gem allows you to use sharded databases with ActiveRecord. This also provides a interface for replication and for running migrations with multiples shards.'
 
   s.files         = `git ls-files`.split("\n")
+  s.files.reject! { |fn| fn.include? "sample_app" }
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ['lib']
@@ -34,6 +35,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'sqlite3', '~> 1.3.6'
   s.add_development_dependency 'pry-byebug'
-
   s.license = 'MIT'
 end
