@@ -336,6 +336,7 @@ module Octopus
     # Temporarily switch `current_shard` and run the block
     def using_shard(shard, &_block)
       older_shard = current_shard
+      older_default_slave_group = default_slave_group
       older_slave_group = current_slave_group
       older_load_balance_options = current_load_balance_options
 
@@ -347,6 +348,7 @@ module Octopus
       ensure
         self.current_shard = older_shard
         self.current_slave_group = older_slave_group
+        self.default_slave_group = older_default_slave_group
         self.current_load_balance_options = older_load_balance_options
       end
     end
