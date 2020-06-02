@@ -7,6 +7,7 @@ module Octopus
     CURRENT_LOAD_BALANCE_OPTIONS_KEY = 'octopus.current_load_balance_options'.freeze
     BLOCK_KEY = 'octopus.block'.freeze
     FULLY_REPLICATED_KEY = 'octopus.fully_replicated'.freeze
+    FORCE_MASTER_KEY = 'octopus.forced_master'.freeze
 
     attr_accessor :config, :sharded, :shards, :shards_slave_groups, :slave_groups,
                   :adapters, :replicated, :slaves_load_balancer, :slaves_list, :shards_slave_groups,
@@ -60,7 +61,7 @@ module Octopus
       end
 
       self.current_slave_group = nil if shard_symbol == :master
-      self.default_slave_group = nil if shard_symbol == :master
+      Thread.current[FORCE_MASTER_KEY] = shard_symbol == :master
       Thread.current[CURRENT_SHARD_KEY] = shard_symbol
     end
 
@@ -78,11 +79,13 @@ module Octopus
     end
 
     def current_slave_group
+      return nil if Thread.current[FORCE_MASTER_KEY]
       Thread.current[CURRENT_SLAVE_GROUP_KEY] || default_slave_group
     end
 
     def current_slave_group=(slave_group_symbol)
       Thread.current[CURRENT_SLAVE_GROUP_KEY] = slave_group_symbol
+      Thread.current[FORCE_MASTER_KEY] = false
       Thread.current[CURRENT_LOAD_BALANCE_OPTIONS_KEY] = nil if slave_group_symbol.nil?
     end
 
